@@ -7,7 +7,7 @@
 }
 
 ---------
-{
+query findCompanyNameById{
   company(id : "1") {
     name
   }
@@ -28,3 +28,29 @@
   }
 }
 ------
+## Query Fragments
+- we can name a query
+- we can request for multiple resource by adding a name in front of the request
+
+query findCompanyNameById{
+  company1: company(id : "1") {
+    name, id, description
+  },
+  company2: company(id : "2") {
+    name, id, description
+  }
+}
+
+-- Now you have noticed same fields repeated twice like (name, id , description). So we can use Query Fragments
+query findCompanyNameById{
+  company1: company(id : "1") {
+    ...companyDetailsField
+  },
+  company2: company(id : "2") {
+    ...companyDetailsField
+  }
+}
+
+fragment companyDetailsField on Company {
+  name, id, description
+}
