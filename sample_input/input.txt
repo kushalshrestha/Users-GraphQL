@@ -95,3 +95,15 @@ mutation {
 ```
 
 --------
+# Mutation - Delete a User
+
+mutation {
+  deleteUser(id: "23"){
+    id
+  }
+}
+
+
+--------
+# Mutation - Edit a User
+
