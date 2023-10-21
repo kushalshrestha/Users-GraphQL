@@ -9,7 +9,7 @@ Before you begin, make sure you have Node.js and npm installed on your machine.
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/users-graphql.git
+   git clone https://github.com/kushalshrestha/Users-GraphQL.git
    ```
 2. Change into the project directory
 
