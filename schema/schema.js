@@ -5,6 +5,7 @@ const {
   GraphQLInt,
   GraphQLSchema,
   GraphQLList,
+  GraphQLNonNull,
 } = graphql;
 // const _ = require("lodash");  /* Replaced with axios*/
 const axios = require("axios");
@@ -26,7 +27,7 @@ const CompanyType = new GraphQLObjectType({
     users: {
       type: new GraphQLList(UserType),
       resolve(parentValue, args) {
-        console.log(API_BASE_URL + `/companies/${parentValue.id}/users`)
+        console.log(API_BASE_URL + `/companies/${parentValue.id}/users`);
         return axios
           .get(API_BASE_URL + `/companies/${parentValue.id}/users`)
           .then((res) => res.data);
@@ -50,6 +51,27 @@ const UserType = new GraphQLObjectType({
       },
     },
   }),
+});
+
+const mutation = new GraphQLObjectType({
+  name: "Mutation",
+  fields: {
+    addUser: {
+      type: UserType /* type of data we need to return*/,
+      args: {
+        firstName: {
+          type: new GraphQLNonNull(GraphQLString),
+        } /* must provide firstName */,
+        age: { type: new GraphQLNonNull(GraphQLInt) },
+        companyId: { type: GraphQLString },
+      },
+      resolve(parentValue, { firstName, age }) {
+        return axios
+          .post(API_BASE_URL + `/users`, { firstName, age })
+          .then((res) => res.data);
+      },
+    },
+  },
 });
 
 const RootQuery = new GraphQLObjectType({
@@ -80,4 +102,5 @@ const RootQuery = new GraphQLObjectType({
 
 module.exports = new GraphQLSchema({
   query: RootQuery,
+  mutation: mutation
 });

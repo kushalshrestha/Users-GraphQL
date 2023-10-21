@@ -54,3 +54,44 @@ query findCompanyNameById{
 fragment companyDetailsField on Company {
   name, id, description
 }
+
+----------
+# MUTATION
+const mutation = new GraphQLObjectType({
+  name: "Mutation",
+  fields: {
+    addUser: {
+      type: UserType /* type of data we need to return*/,
+      args: {
+        firstName: {
+          type: new GraphQLNonNull(GraphQLString),
+        } /* must provide firstName */,
+        age: { type: new GraphQLNonNull(GraphQLInt) },
+        companyId: { type: GraphQLString },
+      },
+      resolve(parentValue, { firstName, age }) {
+        return axios
+          .post(API_BASE_URL + `/users`, { firstName, age })
+          .then((res) => res.data);
+      },
+    },
+  },
+});
+
+/* Need to add mutation for export */
+module.exports = new GraphQLSchema({
+  query: RootQuery,
+  mutation: mutation
+});
+
+`**INPUT:**`
+
+```graphql
+mutation {
+  addUser(firstName: "Ronaldo", age: 28){
+    id, firstName, age
+  }
+}
+```
+
+--------
