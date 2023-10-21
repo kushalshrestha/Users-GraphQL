@@ -1,0 +1,30 @@
+{
+    user(id : "40") {
+      id,firstName, age,company {
+        id, name, description
+      }
+    }
+}
+
+---------
+{
+  company(id : "1") {
+    name
+  }
+}
+---------- 
+# we can nest many times
+{
+  company(id : "1") {
+    id,
+    name,
+    description,
+    users{
+      id,
+      firstName,
+      age,
+      company{name}
+    }
+  }
+}
+------
