@@ -107,3 +107,8 @@ mutation {
 --------
 # Mutation - Edit a User
 
+mutation {
+  editUser(id: "40", firstName: "Lahsuk"){
+    id, firstName, age, company {name, id}
+  }
+}

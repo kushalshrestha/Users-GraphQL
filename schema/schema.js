@@ -72,16 +72,30 @@ const mutation = new GraphQLObjectType({
       },
     },
     deleteUser: {
-        type: UserType /* type of data we need to return*/,
-        args: {
-          id: {type: new GraphQLNonNull(GraphQLString) },
-        },
-        resolve(parentValue, { id }) {
-          return axios
-            .delete(API_BASE_URL + `/users/${ id }`)
-            .then((res) => res.data);
-        },
+      type: UserType /* type of data we need to return*/,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
       },
+      resolve(parentValue, { id }) {
+        return axios
+          .delete(API_BASE_URL + `/users/${id}`)
+          .then((res) => res.data);
+      },
+    },
+    editUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        firstName: { type: GraphQLString },
+        age: { type: GraphQLInt },
+        companyId: { type: GraphQLString },
+      },
+      resolve(parentValue, args) {
+        return axios
+          .patch(API_BASE_URL + `/users/${args.id}`, args)
+          .then((res) => res.data);
+      },
+    },
   },
 });
 
@@ -113,5 +127,5 @@ const RootQuery = new GraphQLObjectType({
 
 module.exports = new GraphQLSchema({
   query: RootQuery,
-  mutation: mutation
+  mutation: mutation,
 });
